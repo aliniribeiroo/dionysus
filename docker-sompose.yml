@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:10.4
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgreSQL
+    restart: always
+    environment:
+      POSTGRES_ROOT_PASSWORD: postgres
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - backend
+
+  mockservice:
+    image: aliniribeiroo/mockservice:latest
+    ports:
+      - "8585:8585"
+    restart: always
+    networks:
+      - backend
+
+  diunysus-docker-postgres:
+    depends_on:
+      - db
+      - mockservice
+    image: aliniribeiroo/diunysus
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      DB_HOST: jdbc:postgresql://db:5432/db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      MOCK_APP_NAME: mockservice
+    networks:
+      - backend
+volumes:
+  db_data:
+
+### Networks Setup ############################################
+networks:
+  backend:
+    driver: "bridge"
