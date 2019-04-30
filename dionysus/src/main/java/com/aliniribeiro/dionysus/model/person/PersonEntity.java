@@ -1,10 +1,10 @@
 package com.aliniribeiro.dionysus.model.person;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Table(name = "person")
@@ -14,7 +14,7 @@ public class PersonEntity {
     @Column(name = "cpf", nullable = false)
     private String cpf;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
 
@@ -25,7 +25,7 @@ public class PersonEntity {
     private String address;
 
 
-    @Column(name = "last_address_update", nullable = false)
+    @Column(name = "LAST_ADDRESS_UPDATE", nullable = false)
     private LocalDate lastAdrdessUpdate;
 
     @Column(name = "last_income_update")

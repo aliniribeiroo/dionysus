@@ -7,17 +7,21 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.logging.Logger;
+
 public class Scheduler implements Job {
 
     @Autowired
     private MockServiceintegration mockIntegration;
+
+    private final static Logger LOGGER = Logger.getLogger(Scheduler.class.getName());
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         try {
             Spring.bean(MockServiceintegration.class).loadData();
         } catch (Exception e) {
-          //  System.out.println("ALERT: >>>" + ExceptionType.BI_ERROR.getDescription());
+            LOGGER.severe("Error calling the Scheduler.");
         }
     }
 

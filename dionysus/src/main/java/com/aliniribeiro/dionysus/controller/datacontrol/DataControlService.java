@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,20 +17,21 @@ public class DataControlService {
     DataControlRepository dataControlRepository;
 
     public Optional<DataControlEntity> getDataControl() {
-        DataControlEntity dataControl = dataControlRepository.findAll().get(0);
-        if (dataControl != null) {
-            return Optional.of(dataControl);
+        List<DataControlEntity> dataControl = dataControlRepository.findAll();
+        if (!dataControl.isEmpty()) {
+            return Optional.of(dataControl.get(0));
         }
         return Optional.empty();
     }
 
     @Transactional
     public void updateData() {
-        DataControlEntity dataControl = dataControlRepository.findAll().get(0);
-        if (dataControl != null) {
-            dataControl.setFirstLoaded(true);
-            dataControl.setLastUpdate(LocalDate.now());
-            dataControlRepository.save(dataControl);
+        List<DataControlEntity> dataControl = dataControlRepository.findAll();
+        if (!dataControl.isEmpty()) {
+            DataControlEntity data = dataControl.get(0);
+            data.setFirstLoaded(true);
+            data.setLastUpdate(LocalDate.now());
+            dataControlRepository.save(data);
         }
     }
 }

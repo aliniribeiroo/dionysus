@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class IncomeService {
@@ -24,8 +23,15 @@ public class IncomeService {
     PersonRepository personRepository;
 
 
-    public void parsePersonIncomes(PersonEntity person, JSONArray debts, LocalDate lastUpdate) {
-        debts.forEach(d -> {
+    /**
+     * Método que faz o parse das informações do Json de retorno do serviço B.
+     *
+     * @param person     pessoa que recebe a renda.
+     * @param incomes    renda da pessoa.
+     * @param lastUpdate data da última atualização desta informação.
+     */
+    public void parsePersonIncomes(PersonEntity person, JSONArray incomes, LocalDate lastUpdate) {
+        incomes.forEach(d -> {
             JSONObject dayInfo = (JSONObject) d;
 
             String originalId = dayInfo.get(StringConstants.ID) != null ? dayInfo.get(StringConstants.ID).toString() : null;
@@ -37,8 +43,19 @@ public class IncomeService {
         });
     }
 
-    private void saveOrUpdatePersonIncomes(String originalId, String type, Double value, String frequency, String locale, PersonEntity person, LocalDate lastUpdate) {
-        IncomeEntity income = incomeRepository.findByOriginalId(originalId);
+    /**
+     * Método salva ou atualiza as informações dos bens da pessoa.
+     *
+     * @param originalId Id de origem do serviço B.
+     * @param type       tipo de renda que a pessoa recebe.
+     * @param value      valor da renda.
+     * @param frequency  frequência que ela recebe esta renda.
+     * @param locale     Localização da pessoa, para converter o valor da moeda corretamente.
+     * @param person     Pessoa.
+     * @param lastUpdate Data da última atualização desta informação.
+     */
+    protected void saveOrUpdatePersonIncomes(String originalId, String type, Double value, String frequency, String locale, PersonEntity person, LocalDate lastUpdate) {
+        IncomeEntity income = incomeRepository.getByOriginalId(originalId);
         if (income == null) {
             income = new IncomeEntity();
             income.setOriginalId(originalId);

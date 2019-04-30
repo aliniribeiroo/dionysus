@@ -12,13 +12,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class PersonService {
@@ -40,6 +37,11 @@ public class PersonService {
     DataControlService dataControlService;
 
 
+    /**
+     * Método que realiza o Parse das informações recebidas do serviço A.
+     *
+     * @param jsonStr Json com os dados recebidos.
+     */
     public void parsePersonInformation(String jsonStr) {
         JSONParser parser = new JSONParser();
         try {
@@ -52,7 +54,7 @@ public class PersonService {
                 String address = dayInfo.get(StringConstants.ADDRESS) != null ? dayInfo.get(StringConstants.ADDRESS).toString() : null;
                 String name = dayInfo.get(StringConstants.NAME) != null ? dayInfo.get(StringConstants.NAME).toString() : null;
 
-                PersonEntity person = savePerson(cpf, name, address);
+                PersonEntity person = saveOrUpdatePerson(cpf, Optional.of(name), address, Optional.empty(), LocalDate.now());
                 debtService.parsePersonDebts(person, ((JSONArray) dayInfo.get(StringConstants.DEBTS)));
             });
             dataControlService.updateData();
@@ -61,6 +63,11 @@ public class PersonService {
         }
     }
 
+    /**
+     * Método que realiza o Parse das informações recebidas do serviço B.
+     *
+     * @param jsonStr Json com os dados recebidos.
+     */
     public void parsePersonIncomeAndAssets(String jsonStr) {
         JSONParser parser = new JSONParser();
         try {
@@ -73,7 +80,7 @@ public class PersonService {
                 Integer birthYear = dayInfo.get(StringConstants.BIRTH_YEAR) != null ? Integer.parseInt(dayInfo.get(StringConstants.BIRTH_YEAR).toString()) : null;
                 String address = dayInfo.get(StringConstants.ADDRESS) != null ? dayInfo.get(StringConstants.ADDRESS).toString() : null;
                 LocalDate lastUpdate = dayInfo.get(StringConstants.LASTUPDATE) != null ? LocalDate.parse(dayInfo.get(StringConstants.LASTUPDATE).toString()) : null;
-                PersonEntity person = updatePerson(cpf, birthYear, address, lastUpdate);
+                PersonEntity person = saveOrUpdatePerson(cpf, Optional.empty(), address, Optional.of(birthYear), lastUpdate);
                 incomeService.parsePersonIncomes(person, (JSONArray) dayInfo.get(StringConstants.INCOMES), lastUpdate);
                 assetsService.parsePersonAssetss(person, (JSONArray) dayInfo.get(StringConstants.ASSETS), lastUpdate);
             });
@@ -83,24 +90,38 @@ public class PersonService {
         }
     }
 
-    private PersonEntity savePerson(String cpf, String name, String address) {
-        LocalDate now = LocalDate.now();
-        PersonEntity person = new PersonEntity();
-        person.setCpf(cpf);
-        person.setAddress(address);
-        person.setLastAdrdessUpdate(now);
-        person.setName(name);
+    /**
+     * Método que cria e/ou atualiza uma pessoa na base de dados.
+     *
+     * @param cpf        CPF da pessoa.
+     * @param name       Nome da pessoa.
+     * @param address    Endereço da pessoa.
+     * @param birthYear  Ano de nascimento da pessoa.
+     * @param lastUpdate data da última atualização deste registro.
+     * @return Pessoa criada/ou alterada.
+     */
+    private PersonEntity saveOrUpdatePerson(String cpf, Optional<String> name, String address, Optional<Integer> birthYear, LocalDate lastUpdate) {
+        PersonEntity person = personRepository.getByCPF(cpf);
+        if (person == null) {
+            person = new PersonEntity();
+            person.setCpf(cpf);
+            person.setAddress(address);
+            person.setLastAdrdessUpdate(lastUpdate);
+        }
+        if (!person.getAddress().equalsIgnoreCase(address) &&
+                person.getLastAdrdessUpdate().isAfter(lastUpdate)) {
+            person.setAddress(address);
+            person.setLastAdrdessUpdate(lastUpdate);
+        }
+        if (birthYear.isPresent()) {
+            person.setBirthYear(birthYear.get());
+        }
+
+        if (name.isPresent()) {
+            person.setName(name.get());
+        }
+
         return personRepository.save(person);
     }
 
-    private PersonEntity updatePerson(String cpf, Integer birthYear, String address, LocalDate lastUpdate) {
-        PersonEntity personEntity = personRepository.findBycpf(cpf);
-        personEntity.setBirthYear(birthYear);
-        if (!personEntity.getAddress().equalsIgnoreCase(address) &&
-                personEntity.getLastAdrdessUpdate().isAfter(lastUpdate)){
-            personEntity.setAddress(address);
-            personEntity.setLastAdrdessUpdate(lastUpdate);
-        }
-        return personRepository.save(personEntity);
-    }
 }

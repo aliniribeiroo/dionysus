@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface IncomeRepository extends JpaRepository<IncomeEntity, UUID> {
+public interface IncomeRepository extends JpaRepository<IncomeEntity, UUID>, IncomeRepositoryCustom {
 
-    IncomeEntity findByOriginalId(String originalId);
 }

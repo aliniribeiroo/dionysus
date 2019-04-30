@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Component
 public class MockServiceintegration {
@@ -23,8 +24,10 @@ public class MockServiceintegration {
     @Autowired
     DataControlService dataControlService;
 
-    public void loadData(){
-        System.out.println("Scheduler foi chamado");
+    private final static Logger LOGGER = Logger.getLogger(MockServiceintegration.class.getName());
+
+    public void loadData() {
+        LOGGER.info("Scheduler was called!");
         Optional<DataControlEntity> dataControl = dataControlService.getDataControl();
         loadServiceAData(dataControl);
         loadServiceBData(dataControl);
@@ -35,18 +38,22 @@ public class MockServiceintegration {
      * Se a primeira carga já foi realizada uma vez, a busca é feita apenas dos dados do dia anterior.
      */
     public void loadServiceAData(Optional<DataControlEntity> dataControl) {
-        RestTemplate restTemplate = new RestTemplate();
+        try {
+            RestTemplate restTemplate = new RestTemplate();
 
-        String URI = StringConstants.ALL_DEBTS_URL;
-        if (dataControl.get().getFirstLoaded()){
-            LocalDate lastUpdatedData = dataControl.get().getLastUpdate();
-            LocalDate now = LocalDate.now();
-            URI = String.format(StringConstants.DATE_DEBTS_URL, lastUpdatedData.toString(), now);
+            String URI = StringConstants.ALL_DEBTS_URL;
+            if (dataControl.get().getFirstLoaded()) {
+                LocalDate lastUpdatedData = dataControl.get().getLastUpdate();
+                LocalDate now = LocalDate.now();
+                URI = String.format(StringConstants.DATE_DEBTS_URL, lastUpdatedData.toString(), now);
+            }
+            ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+            });
+            String response = responseEntity.getBody();
+            personService.parsePersonInformation(response);
+        } catch (Exception e) {
+            LOGGER.severe("Error gettting A service data!");
         }
-        ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
-        });
-        String response = responseEntity.getBody();
-        personService.parsePersonInformation(response);
     }
 
 
@@ -55,17 +62,22 @@ public class MockServiceintegration {
      * Se a primeira carga já foi realizada uma vez, a busca é feita apenas dos dados do dia anterior.
      */
     public void loadServiceBData(Optional<DataControlEntity> dataControl) {
-        RestTemplate restTemplate = new RestTemplate();
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String URI = StringConstants.ALL_INCOME_AND_ASSETS_URL;
+            if (dataControl.get().getFirstLoaded()) {
+                LocalDate lastUpdatedData = dataControl.get().getLastUpdate();
+                LocalDate now = LocalDate.now();
+                URI = String.format(StringConstants.DATE_INCOME_AND_ASSETS_URL, lastUpdatedData.toString(), now);
+            }
+            ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+            });
+            String response = responseEntity.getBody();
+            personService.parsePersonIncomeAndAssets(response);
 
-        String URI = StringConstants.ALL_INCOME_AND_ASSETS_URL;
-        if (dataControl.get().getFirstLoaded()){
-            LocalDate lastUpdatedData = dataControl.get().getLastUpdate();
-            LocalDate now = LocalDate.now();
-            URI = String.format(StringConstants.DATE_INCOME_AND_ASSETS_URL, lastUpdatedData.toString(), now);
+        } catch (Exception e) {
+            LOGGER.severe("Error gettting B service data!");
         }
-        ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
-        });
-        String response = responseEntity.getBody();
-        personService.parsePersonIncomeAndAssets(response);
+
     }
 }

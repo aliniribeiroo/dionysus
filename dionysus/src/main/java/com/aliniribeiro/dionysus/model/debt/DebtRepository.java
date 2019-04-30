@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface DebtRepository extends JpaRepository<DebtEntity, UUID> {
+public interface DebtRepository extends JpaRepository<DebtEntity, UUID>, DebtRepositoryCustom {
 }

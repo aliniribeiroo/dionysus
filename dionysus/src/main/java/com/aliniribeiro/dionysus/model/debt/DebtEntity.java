@@ -24,7 +24,7 @@ public class DebtEntity {
     private String personCPF;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "personCPF", referencedColumnName = "cpf", insertable = false, updatable = false)
+    @JoinColumn(name = "cpf", referencedColumnName = "cpf", insertable = false, updatable = false)
     private PersonEntity person;
 
     @Column(name = "last_update")

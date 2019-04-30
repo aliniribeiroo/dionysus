@@ -15,12 +15,22 @@ import java.time.LocalDate;
 @Service
 public class AssetsService {
 
-    @Autowired
     AssetRepository assetRepository;
-
-    @Autowired
     PersonRepository personRepository;
 
+    @Autowired
+    public AssetsService(AssetRepository assetRepository, PersonRepository personRepository) {
+        this.assetRepository = assetRepository;
+        this.personRepository = personRepository;
+    }
+
+    /**
+     * Método que faz o parse das informações do Json de retorno do serviço A.
+     *
+     * @param person     Pessoa.
+     * @param debts      dívidas da pessoa.
+     * @param lastUpdate data da última atualização desta informação.
+     */
     public void parsePersonAssetss(PersonEntity person, JSONArray debts, LocalDate lastUpdate) {
         debts.forEach(d -> {
             JSONObject dayInfo = (JSONObject) d;
@@ -33,9 +43,19 @@ public class AssetsService {
         });
     }
 
-    private void saveOrUpdatePersonAssets(String originalId, String type, Double value, String locale, PersonEntity person, LocalDate lastUpdate) {
-        AssetEntity assets = assetRepository.findByOriginalId(originalId);
-        if (assets == null){
+    /**
+     * Método salva ou atualiza as informações dos bens da pessoa.
+     *
+     * @param originalId Id de origem do serviço B.
+     * @param type       tipo de bem que a pessoa possui.
+     * @param value      valor do bem.
+     * @param locale     Localização da pessoa, para converter o valor da moeda corretamente.
+     * @param person     Pessoa.
+     * @param lastUpdate Data da última atualização desta informação.
+     */
+    protected void saveOrUpdatePersonAssets(String originalId, String type, Double value, String locale, PersonEntity person, LocalDate lastUpdate) {
+        AssetEntity assets = assetRepository.getByOriginalId(originalId);
+        if (assets == null) {
             assets = new AssetEntity();
             assets.setOriginalId(originalId);
             assets.setPersonId(person.getCpf());
@@ -49,5 +69,5 @@ public class AssetsService {
         person.setLastAssetsUpdate(LocalDate.now());
         personRepository.save(person);
     }
-    
+
 }

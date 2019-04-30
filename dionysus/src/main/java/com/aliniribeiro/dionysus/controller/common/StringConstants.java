@@ -1,7 +1,5 @@
 package com.aliniribeiro.dionysus.controller.common;
 
-import java.time.LocalDate;
-
 public class StringConstants {
 
     static public final String ALL_DEBTS_URL = "http://localhost:8585/mockA/getAllDebts";
