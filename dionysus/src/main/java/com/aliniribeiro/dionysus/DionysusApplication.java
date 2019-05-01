@@ -1,6 +1,5 @@
 package com.aliniribeiro.dionysus;
 
-import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -13,11 +12,10 @@ public class DionysusApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DionysusApplication.class, args);
-		//callQuartzScheduller();
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(MockServiceintegration BiIn) {
+	public CommandLineRunner commandLineRunner() {
 		return args -> {
 			callQuartzScheduller();
 		};

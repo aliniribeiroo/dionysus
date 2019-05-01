@@ -1,20 +1,19 @@
 package com.aliniribeiro.dionysus.controller.debts;
 
 import com.aliniribeiro.dionysus.controller.common.StringConstants;
-import com.aliniribeiro.dionysus.controller.debts.contracts.GetDebtsOutput;
 import com.aliniribeiro.dionysus.controller.debts.mapper.DebtsMapper;
-import com.aliniribeiro.dionysus.model.common.PageResult;
+import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import com.aliniribeiro.dionysus.model.debt.DebtEntity;
 import com.aliniribeiro.dionysus.model.debt.DebtRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import com.aliniribeiro.dionysus.model.person.PersonRepository;
+import com.aliniribeiro.dionysus.util.JsonParserHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 @Service
 public class DebtService {
@@ -25,6 +24,8 @@ public class DebtService {
     @Autowired
     DebtsMapper mapper;
 
+    @Autowired
+    MockServiceintegration mockServiceintegration;
 
     @Autowired
     PersonRepository personRepository;
@@ -39,13 +40,13 @@ public class DebtService {
         debts.forEach(d -> {
             JSONObject dayInfo = (JSONObject) d;
 
-            String locale = dayInfo.get(StringConstants.LOCALE) != null ? dayInfo.get(StringConstants.LOCALE).toString() : null;
-            String originalId = dayInfo.get(StringConstants.ID) != null ? dayInfo.get(StringConstants.ID).toString() : null;
-            LocalDate lastUpdate = dayInfo.get(StringConstants.LASTUPDATE) != null ? LocalDate.parse(dayInfo.get(StringConstants.LASTUPDATE).toString()) : null;
-            LocalDate originDate = dayInfo.get(StringConstants.ORIGINDATE) != null ? LocalDate.parse(dayInfo.get(StringConstants.ORIGINDATE).toString()) : null;
-            String description = dayInfo.get(StringConstants.DESCRIPTION) != null ? dayInfo.get(StringConstants.DESCRIPTION).toString() : null;
-            String status = dayInfo.get(StringConstants.STATUS) != null ? dayInfo.get(StringConstants.STATUS).toString() : null;
-            Double value = dayInfo.get(StringConstants.VALUE) != null ? new Double(dayInfo.get(StringConstants.VALUE).toString()) : null;
+            String originalId = JsonParserHelper.toString(dayInfo, StringConstants.ID);
+            String locale = JsonParserHelper.toString(dayInfo, StringConstants.LOCALE);
+            LocalDate lastUpdate = JsonParserHelper.toLocalDate(dayInfo, StringConstants.LASTUPDATE);
+            LocalDate originDate = JsonParserHelper.toLocalDate(dayInfo, StringConstants.ORIGINDATE);
+            String description = JsonParserHelper.toString(dayInfo, StringConstants.DESCRIPTION);
+            String status = JsonParserHelper.toString(dayInfo, StringConstants.STATUS);
+            Double value = JsonParserHelper.toDouble(dayInfo, StringConstants.VALUE);
             saveOrUpdatePersonDebts(originalId, locale, lastUpdate, originDate, description, status, value, person);
         });
     }
@@ -83,20 +84,5 @@ public class DebtService {
         personRepository.save(person);
     }
 
-    /**
-     * Método que retorna todas as dívidas do CPF.
-     *
-     * @param cpf  CPF que a dívida será solicitada.
-     * @param page pagina a ser encontrada.
-     * @param size tamanho da página a ser encontrada.
-     * @return GetDebtsOutput com as informações das dívidas encontradas.
-     */
-    public GetDebtsOutput getDebts(String cpf, Long page, Long size) {
-        PageResult<DebtEntity> debts = debtRepository.getDebts(cpf, page, size);
-        GetDebtsOutput output = new GetDebtsOutput();
-        output.registerFound = debts.getTotalCount();
-        output.debts = new ArrayList<>();
-        debts.getRows().stream().forEach(c -> output.debts.add(mapper.toDebtsDTO(c)));
-        return output;
-    }
+
 }

@@ -1,5 +1,7 @@
 package com.aliniribeiro.dionysus.model.person;
 
+import java.util.Optional;
+
 public interface PersonRepositoryCustom {
 
     /**
@@ -8,6 +10,6 @@ public interface PersonRepositoryCustom {
      * @param cpf CPF da pessoa.
      * @return Pessoa que possui o CPF informado.
      */
-    PersonEntity getByCPF(String cpf);
+    Optional<PersonEntity> getByCPF(String cpf);
 
 }

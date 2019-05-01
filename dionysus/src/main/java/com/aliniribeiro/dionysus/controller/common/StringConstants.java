@@ -5,11 +5,19 @@ public class StringConstants {
     static public final String ALL_DEBTS_URL = "http://localhost:8585/mockA/getAllDebts";
     static public final String DATE_DEBTS_URL = "http://localhost:8585/mockA/getAllCPFDebts/%s/%s";
     static public final String ALL_INCOME_AND_ASSETS_URL = "http://localhost:8585/mockB/getAllIncomeAndAssets";
+    static public final String CPF_INCOME_AND_ASSETS_URL = "http://localhost:8585/mockB/getCPFIncomeAndAssets/%s";
     static public final String DATE_INCOME_AND_ASSETS_URL = "http://localhost:8585/mockB/getCPFIncomeAndAssets/%s/%s";
+    static public final String LAST_SEARCH_URL = "http://localhost:8585/mockC/getLastSearch/%s";
+    static public final String FINANCIAL_MOVEMENT_URL = "http://localhost:8585/mockC/getFinancialMovement/%s";
+    static public final String LAST_CREDICT_CARD_PURCHASE_URL = "http://localhost:8585/mockC/getLastCredictCardPurchase/%s";
     static public final String DATA = "data";
+    static public final String ESTABLISHMENT = "establishment";
+
     static public final String ADDRESS = "address";
     static public final String CPF = "cpf";
-    static public final String NAME = "fullname";
+    static public final String NAME = "name";
+    static public final String CITY = "city";
+    static public final String FULL_NAME = "fullname";
     static public final String DEBTS = "debts";
     static public final String LOCALE = "locale";
     static public final String ID = "id";
@@ -23,6 +31,7 @@ public class StringConstants {
     static public final String FREQUENCY = "frequency";
     static public final String INCOMES = "incomes";
     static public final String ASSETS = "assets";
+    static public final String DATE = "date";
 
 
 }

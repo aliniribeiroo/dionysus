@@ -1,8 +1,8 @@
 package com.aliniribeiro.dionysus.model.debt;
 
-import com.aliniribeiro.dionysus.model.common.PageResult;
+        import com.aliniribeiro.dionysus.model.common.PageResult;
 
-import java.util.List;
+        import java.util.List;
 
 public interface DebtRepositoryCustom {
 
@@ -21,7 +21,7 @@ public interface DebtRepositoryCustom {
      * @param cpf  CPF que a dívida será solicitada.
      * @param page pagina a ser encontrada.
      * @param size tamanho da página a ser encontrada.
-     * @return GetDebtsOutput com as informações das dívidas encontradas.
+     * @return PageResult com as informações das dívidas encontradas.
      */
     PageResult getDebts(String cpf, Long page, Long size);
 

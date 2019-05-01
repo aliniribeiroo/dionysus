@@ -13,6 +13,7 @@ public class DionysusApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		System.out.println("Teste");
 	}
 
 }

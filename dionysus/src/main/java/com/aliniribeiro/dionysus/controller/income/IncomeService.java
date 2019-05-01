@@ -6,6 +6,7 @@ import com.aliniribeiro.dionysus.model.income.IncomeEntity;
 import com.aliniribeiro.dionysus.model.income.IncomeRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import com.aliniribeiro.dionysus.model.person.PersonRepository;
+import com.aliniribeiro.dionysus.util.JsonParserHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,11 @@ public class IncomeService {
         incomes.forEach(d -> {
             JSONObject dayInfo = (JSONObject) d;
 
-            String originalId = dayInfo.get(StringConstants.ID) != null ? dayInfo.get(StringConstants.ID).toString() : null;
-            String type = dayInfo.get(StringConstants.TYPE) != null ? dayInfo.get(StringConstants.TYPE).toString() : null;
-            Double value = dayInfo.get(StringConstants.VALUE) != null ? new Double(dayInfo.get(StringConstants.VALUE).toString()) : null;
-            String frequency = dayInfo.get(StringConstants.FREQUENCY) != null ? dayInfo.get(StringConstants.FREQUENCY).toString() : null;
-            String locale = dayInfo.get(StringConstants.LOCALE) != null ? dayInfo.get(StringConstants.LOCALE).toString() : null;
+            String originalId = JsonParserHelper.toString(dayInfo, StringConstants.ID);
+            String locale = JsonParserHelper.toString(dayInfo, StringConstants.LOCALE);
+            Double value = JsonParserHelper.toDouble(dayInfo, StringConstants.VALUE);
+            String type = JsonParserHelper.toString(dayInfo, StringConstants.TYPE);
+            String frequency = JsonParserHelper.toString(dayInfo, StringConstants.FREQUENCY);
             saveOrUpdatePersonIncomes(originalId, type, value, frequency, locale, person, lastUpdate);
         });
     }

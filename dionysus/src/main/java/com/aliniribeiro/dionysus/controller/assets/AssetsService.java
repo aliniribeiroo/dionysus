@@ -1,10 +1,12 @@
 package com.aliniribeiro.dionysus.controller.assets;
 
 import com.aliniribeiro.dionysus.controller.common.StringConstants;
+import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import com.aliniribeiro.dionysus.model.assets.AssetEntity;
 import com.aliniribeiro.dionysus.model.assets.AssetRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import com.aliniribeiro.dionysus.model.person.PersonRepository;
+import com.aliniribeiro.dionysus.util.JsonParserHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +17,17 @@ import java.time.LocalDate;
 @Service
 public class AssetsService {
 
+
+
     AssetRepository assetRepository;
     PersonRepository personRepository;
+    MockServiceintegration mockServiceintegration;
 
     @Autowired
-    public AssetsService(AssetRepository assetRepository, PersonRepository personRepository) {
+    public AssetsService(AssetRepository assetRepository, PersonRepository personRepository,   MockServiceintegration mockServiceintegration) {
         this.assetRepository = assetRepository;
         this.personRepository = personRepository;
+        this.mockServiceintegration = mockServiceintegration;
     }
 
     /**
@@ -35,10 +41,10 @@ public class AssetsService {
         debts.forEach(d -> {
             JSONObject dayInfo = (JSONObject) d;
 
-            String originalId = dayInfo.get(StringConstants.ID) != null ? dayInfo.get(StringConstants.ID).toString() : null;
-            String type = dayInfo.get(StringConstants.TYPE) != null ? dayInfo.get(StringConstants.TYPE).toString() : null;
-            Double value = dayInfo.get(StringConstants.VALUE) != null ? new Double(dayInfo.get(StringConstants.VALUE).toString()) : null;
-            String locale = dayInfo.get(StringConstants.LOCALE) != null ? dayInfo.get(StringConstants.LOCALE).toString() : null;
+            String originalId = JsonParserHelper.toString(dayInfo, StringConstants.ID);
+            String type = JsonParserHelper.toString(dayInfo, StringConstants.TYPE);
+            Double value = JsonParserHelper.toDouble(dayInfo, StringConstants.VALUE);
+            String locale = JsonParserHelper.toString(dayInfo, StringConstants.LOCALE);
             saveOrUpdatePersonAssets(originalId, type, value, locale, person, lastUpdate);
         });
     }
@@ -69,5 +75,7 @@ public class AssetsService {
         person.setLastAssetsUpdate(LocalDate.now());
         personRepository.save(person);
     }
+
+
 
 }

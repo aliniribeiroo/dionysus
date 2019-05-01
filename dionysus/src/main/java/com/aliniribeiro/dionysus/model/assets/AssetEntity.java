@@ -54,10 +54,6 @@ public class AssetEntity {
         return personCPF;
     }
 
-    public void setPersonCPF(String personCPF) {
-        this.personCPF = personCPF;
-    }
-
     public LocalDate getLastUpdate() {
         return lastUpdate;
     }

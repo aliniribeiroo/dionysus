@@ -1,5 +1,6 @@
 package com.aliniribeiro.dionysus.controller.assets;
 
+import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import com.aliniribeiro.dionysus.model.assets.AssetRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import com.aliniribeiro.dionysus.model.person.PersonRepository;
@@ -22,6 +23,8 @@ public class AssetsServiceTest {
     AssetRepository assetRepositoryMock;
     @Mock
     PersonRepository personRepositoryMock;
+    @Mock
+    MockServiceintegration mockServiceintegration;
 
     @InjectMocks
     private AssetsService service;
@@ -30,7 +33,7 @@ public class AssetsServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        service = new AssetsService(assetRepositoryMock, personRepositoryMock);
+        service = new AssetsService(assetRepositoryMock, personRepositoryMock, mockServiceintegration);
     }
 
 
