@@ -43,7 +43,7 @@ O projeto foi construído em utilizando as seguintes tecnologias:
 
 
 
-Tanto a mock quanto o dionysus, tiveram suas imagens geradas e disponibilizadas no dockerHub:
+Tanto a mock quanto o dionysus, tiveram suas imagens geradas e disponibilizadas no [dockerHub](https://hub.docker.com/u/aliniribeiroo):
 * [Imagem do MockServices](https://hub.docker.com/r/aliniribeiroo/dionysus)
 * [Imagem do Dionysus](https://hub.docker.com/r/aliniribeiroo/mockservice)
 
