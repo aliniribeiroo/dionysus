@@ -34,8 +34,8 @@ Temos uma API específica para os administradores do sistema, para rastrear quai
 
 A implementação de autenticação foi realizada com [JWT](https://jwt.io/).
 
-Segue um exemplo de como chamar uma API localmente pelo postman utilizando o token:
-
+Para realizar os testes das API`s que o dionysus disponibiliza, sera um pré-requisito realizar a autenticação no sisterma e utilizar o tone da API de login  no Header da requisição, de acordo com o exemplo do giff abaixo:
+![auth](https://user-images.githubusercontent.com/10133177/57044898-73ec0600-6c42-11e9-880f-fbf0331c7558.gif)
 
 #### Usuários padrões
 
