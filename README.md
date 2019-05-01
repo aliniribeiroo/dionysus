@@ -27,6 +27,22 @@ Para o armazenamento destas informações, foi escolhido o banco de dados Postgr
 * [As APIS consumidas pela Mock podem ser encontradas aqui.](https://github.com/aliniribeiroo/dionysus/wiki/Mock-Service-APIs)
 * [As APIS que o Dionysus disponibiliza podem ser encontradas aqui.](https://github.com/aliniribeiroo/dionysus/wiki/Dionysus-API%60s)
 
+## Autenticação
+
+As API`s disponíveis no Dionysus respeitam a autênticação e o papel do ususário que está realizando a solicitação de dados.
+Temos uma API específica para os administradores do sistema, para rastrear quais os usuários que buscaram no Dionysus por um CPF específico, fazendo assim transparente a rastreabilidade da busca das informaçoes no sistema [(Documentação desta API no final desta página)](https://github.com/aliniribeiroo/dionysus/wiki/Dionysus-API%60s).
+
+A implementação de autenticação foi realizada com [JWT](https://jwt.io/).
+
+Segue um exemplo de como chamar uma API localmente pelo postman utilizando o token:
+
+
+#### Usuários padrões
+
+* user:admin@dionysus.com | password:123456
+* user: user@dionysus.com | password:123456
+
+
 ## Técnologias utilizadas
 
 O projeto foi construído em utilizando as seguintes tecnologias:
