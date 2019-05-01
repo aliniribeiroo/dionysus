@@ -1,4 +1,3 @@
-before_script: cd dionysus
 before_install: cd dionysus
 language: java
 jdk:
