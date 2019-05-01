@@ -3,6 +3,7 @@ package com.aliniribeiro.dionysus.controller.debts;
 import com.aliniribeiro.dionysus.controller.common.StringConstants;
 import com.aliniribeiro.dionysus.controller.debts.mapper.DebtsMapper;
 import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
+import com.aliniribeiro.dionysus.model.common.PageResult;
 import com.aliniribeiro.dionysus.model.debt.DebtEntity;
 import com.aliniribeiro.dionysus.model.debt.DebtRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
@@ -84,5 +85,17 @@ public class DebtService {
         personRepository.save(person);
     }
 
+
+    /**
+     * Método que retorna todas as dívidas do CPF.
+     *
+     * @param cpf  CPF que a dívida será solicitada.
+     * @param page pagina a ser encontrada.
+     * @param size tamanho da página a ser encontrada.
+     * @return PageResult com as informações das dívidas encontradas.
+     */
+    public PageResult getDebts(String cpf, Long page, Long size){
+        return debtRepository.getDebts(cpf, page, size);
+    }
 
 }

@@ -4,6 +4,7 @@ import com.aliniribeiro.dionysus.controller.common.StringConstants;
 import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import com.aliniribeiro.dionysus.model.assets.AssetEntity;
 import com.aliniribeiro.dionysus.model.assets.AssetRepository;
+import com.aliniribeiro.dionysus.model.common.PageResult;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import com.aliniribeiro.dionysus.model.person.PersonRepository;
 import com.aliniribeiro.dionysus.util.JsonParserHelper;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class AssetsService {
@@ -77,5 +79,26 @@ public class AssetsService {
     }
 
 
+    /**
+     * Método que retorna todos os bens do CPF.
+     *
+     * @param cpf  CPF que a dívida será solicitada.
+     * @param page pagina a ser encontrada.
+     * @param size tamanho da página a ser encontrada.
+     * @return PageResult com as informações das dívidas encontradas.
+     */
+    public PageResult getAssets(String cpf, Long page, Long size){
+        return assetRepository.getAssets(cpf, page, size);
+    }
+
+
+    /**
+     * Método que retorna todos os bens de uma pessoa.
+     * @param cpf CPF da pessoa.
+     * @return Lista de Bens de uma pessoa.
+     */
+    public List<AssetEntity> getAllAssets(String cpf){
+        return assetRepository.getAllAssets(cpf);
+    }
 
 }

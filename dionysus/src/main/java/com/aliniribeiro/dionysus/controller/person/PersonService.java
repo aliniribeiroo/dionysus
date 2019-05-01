@@ -10,6 +10,7 @@ import com.aliniribeiro.dionysus.controller.income.IncomeService;
 import com.aliniribeiro.dionysus.controller.income.contracts.PersonIncomeOutput;
 import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import com.aliniribeiro.dionysus.controller.assets.contracts.PersonAssetsOutput;
+import com.aliniribeiro.dionysus.controller.person.contracts.GetCPFPointsOutput;
 import com.aliniribeiro.dionysus.controller.person.mapper.PersonMapper;
 import com.aliniribeiro.dionysus.model.assets.AssetEntity;
 import com.aliniribeiro.dionysus.model.assets.AssetRepository;
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,16 +55,7 @@ public class PersonService {
     DataControlService dataControlService;
 
     @Autowired
-    IncomeRepository incomeRepository;
-
-    @Autowired
-    AssetRepository assetRepository;
-
-    @Autowired
     PersonMapper personMapper;
-
-    @Autowired
-    DebtRepository debtRepository;
 
     /**
      * Método que carrega as informações do Serviço A.
@@ -70,7 +63,10 @@ public class PersonService {
     public void loadServiceAPersonData() {
         Optional<DataControlEntity> dataControl = dataControlService.getDataControl();
         Optional<String> jsonStr = mockServiceintegration.loadServiceAData(dataControl);
-        parsePersonInformation(jsonStr.get());
+        if (jsonStr.isPresent()) {
+            parsePersonInformation(jsonStr.get());
+        }
+
     }
 
     /**
@@ -79,7 +75,9 @@ public class PersonService {
     public void loadServicBPersonData() {
         Optional<DataControlEntity> dataControl = dataControlService.getDataControl();
         Optional<String> jsonStr = mockServiceintegration.loadServiceBData(dataControl);
-        parsePersonIncomeAndAssets(jsonStr.get());
+        if (jsonStr.isPresent()) {
+            parsePersonIncomeAndAssets(jsonStr.get());
+        }
     }
 
     /**
@@ -101,7 +99,6 @@ public class PersonService {
                 PersonEntity person = saveOrUpdatePerson(cpf, Optional.of(name), address, Optional.empty(), LocalDate.now());
                 debtService.parsePersonDebts(person, ((JSONArray) dayInfo.get(StringConstants.DEBTS)));
             });
-            dataControlService.updateData();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -122,7 +119,7 @@ public class PersonService {
 
                 String cpf = JsonParserHelper.toString(dayInfo, StringConstants.CPF);
                 String address = JsonParserHelper.toString(dayInfo, StringConstants.ADDRESS);
-                Integer birthYear = JsonParserHelper.toInteger(dayInfo, StringConstants.ID);
+                Integer birthYear = JsonParserHelper.toInteger(dayInfo, StringConstants.BIRTH_YEAR);
                 LocalDate lastUpdate = JsonParserHelper.toLocalDate(dayInfo, StringConstants.LASTUPDATE);
                 String name = JsonParserHelper.toString(dayInfo, StringConstants.FULL_NAME);
 
@@ -130,7 +127,6 @@ public class PersonService {
                 incomeService.parsePersonIncomes(person, (JSONArray) dayInfo.get(StringConstants.INCOMES), lastUpdate);
                 assetsService.parsePersonAssetss(person, (JSONArray) dayInfo.get(StringConstants.ASSETS), lastUpdate);
             });
-            dataControlService.updateData();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -185,7 +181,7 @@ public class PersonService {
             Optional<String> jsonStr = mockServiceintegration.getAssetsAndIncomeByCPF(cpf);
             personEntity = parsePersonIncomeAndAssetsByCPF(jsonStr.get());
         }
-        PageResult<AssetEntity> assets = assetRepository.getAssets(cpf, page, size);
+        PageResult<AssetEntity> assets = assetsService.getAssets(cpf, page, size);
         return personMapper.toPersonAssetsOutput(assets, personEntity.get().getName());
     }
 
@@ -205,7 +201,7 @@ public class PersonService {
             personEntity = parsePersonIncomeAndAssetsByCPF(jsonStr.get());
         }
 
-        PageResult<IncomeEntity> incomes = incomeRepository.getIncomes(cpf, page, size);
+        PageResult<IncomeEntity> incomes = incomeService.getIncomes(cpf, page, size);
         return personMapper.toPersonIncomeOutput(incomes, personEntity.get().getName());
     }
 
@@ -223,7 +219,7 @@ public class PersonService {
             String cpf = JsonParserHelper.toString(data, StringConstants.CPF);
             String address = JsonParserHelper.toString(data, StringConstants.ADDRESS);
             String name = JsonParserHelper.toString(data, StringConstants.FULL_NAME);
-            Integer birthYear = JsonParserHelper.toInteger(data, StringConstants.ID);
+            Integer birthYear = JsonParserHelper.toInteger(data, StringConstants.BIRTH_YEAR);
             LocalDate lastUpdate = JsonParserHelper.toLocalDate(data, StringConstants.LASTUPDATE);
 
             PersonEntity person = saveOrUpdatePerson(cpf, Optional.of(name), address, Optional.of(birthYear), lastUpdate);
@@ -250,7 +246,41 @@ public class PersonService {
             Optional<String> jsonStr = mockServiceintegration.getAssetsAndIncomeByCPF(cpf);
             personEntity = parsePersonIncomeAndAssetsByCPF(jsonStr.get());
         }
-        PageResult<DebtEntity> debts = debtRepository.getDebts(cpf, page, size);
+        PageResult<DebtEntity> debts = debtService.getDebts(cpf, page, size);
         return personMapper.toGetDebtsOutput(debts, personEntity.get().getName(), personEntity.get().getCpf());
+    }
+
+    /**
+     * Método que calcula os pontos que um CPF possui.
+     *
+     * @param cpf CPF.
+     * @return GetCPFPointsOutput com as informações da pontiação do CPF.
+     */
+    public GetCPFPointsOutput getCPFPoints(String cpf) {
+        Optional<PersonEntity> personEntity = personRepository.getByCPF(cpf);
+        if (!personEntity.isPresent()) {
+            Optional<String> jsonStr = mockServiceintegration.getAssetsAndIncomeByCPF(cpf);
+            personEntity = parsePersonIncomeAndAssetsByCPF(jsonStr.get());
+        }
+        GetCPFPointsOutput output = new GetCPFPointsOutput();
+        if (personEntity.isPresent()) {
+            Integer age = LocalDate.now().getYear() - personEntity.get().getBirthYear();
+            List<AssetEntity> assetEntityList = assetsService.getAllAssets(cpf);
+            List<IncomeEntity> incomeEntities = incomeService.getAllIncomes(cpf);
+            Integer average = 500;
+
+            //Se possui idade entre 18 e 55 anos  possui 800 pontos, caso contratio, possui 425 pontos.
+            Integer agePoints = age >= 18 && age <= 55 ? average + 300 : average - 75;
+
+            //Se possui mais que dois rendimentos, recebe 100 pontos, até 2 rendimentos 50 pontos e sem rendimentos perde 70 pontos.
+            Integer incomePoints = incomeEntities.size() >= 2 ? 100 : incomeEntities.size() == 0 ? -70 : 50;
+
+            Integer assetspoints = assetEntityList.size() >= 2 ? 100 : incomeEntities.size() == 0 ? -70 : 50;
+
+            output.age = age;
+            output.average = average;
+            output.points = agePoints + incomePoints + assetspoints;
+        }
+        return output;
     }
 }

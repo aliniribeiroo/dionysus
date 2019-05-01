@@ -1,8 +1,10 @@
 package com.aliniribeiro.dionysus.model.assets;
 
+import com.aliniribeiro.dionysus.model.common.PageResult;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import javafx.application.Application;
 import org.assertj.core.api.Assertions;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,12 @@ public class AssetRepositoryTest {
 
     @Autowired
     AssetRepository assetRepository;
+
+    @After
+    public void cleanUp() {
+        assetRepository.deleteAll();
+    }
+
 
     @Test
     public void getByOriginalId() {
@@ -52,5 +60,40 @@ public class AssetRepositoryTest {
 
         AssetEntity output = assetRepository.getByOriginalId(originId1);
         Assertions.assertThat(output).isEqualTo(asset1);
+    }
+
+    @Test
+    public void getAssets_shouldReturn_One() {
+        PersonEntity person = new PersonEntity();
+        person.setCpf("12345");
+        person.setAddress("xanana");
+        person.setLastAdrdessUpdate(LocalDate.now());
+        entityManager.persistAndFlush(person);
+
+        String originId1 = UUID.randomUUID().toString();
+        AssetEntity asset1 = new AssetEntity();
+        asset1.setPersonId("12345");
+        asset1.setOriginalId(originId1);
+        asset1.setType("APPARTMENT_IMMOVABLE_PROPERTY");
+        asset1.setLocale("en_US");
+        asset1.setAssetsValue(new Double(1235));
+        asset1 = entityManager.persistAndFlush(asset1);
+
+        String originId2 = UUID.randomUUID().toString();
+        AssetEntity asset2 = new AssetEntity();
+        asset2.setPersonId("12345");
+        asset2.setOriginalId(originId2);
+        asset2.setType("APPARTMENT_IMMOVABLE_PROPERTY");
+        asset2.setLocale("en_US");
+        asset2.setAssetsValue(new Double(1235));
+        asset2 = entityManager.persistAndFlush(asset2);
+
+        String cpf = person.getCpf();
+        Long page = 1L;
+        Long size = 1L;
+        PageResult output = assetRepository.getAssets(cpf, page, size);
+
+        Assertions.assertThat(output.getTotalCount()).isEqualTo(2L);
+        Assertions.assertThat(output.getRows().size()).isEqualTo(1L);
     }
 }

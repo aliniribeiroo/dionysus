@@ -1,5 +1,6 @@
 package com.aliniribeiro.dionysus.controller.common;
 
+import com.aliniribeiro.dionysus.controller.datacontrol.DataControlService;
 import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import com.aliniribeiro.dionysus.controller.person.PersonService;
 import com.aliniribeiro.dionysus.util.Spring;
@@ -23,7 +24,7 @@ public class Scheduler implements Job {
             LOGGER.info("Scheduler was called!");
             Spring.bean(PersonService.class).loadServiceAPersonData();
             Spring.bean(PersonService.class).loadServicBPersonData();
-
+            Spring.bean(DataControlService.class).updateData();
         } catch (Exception e) {
             LOGGER.severe("Error calling the Scheduler.");
         }

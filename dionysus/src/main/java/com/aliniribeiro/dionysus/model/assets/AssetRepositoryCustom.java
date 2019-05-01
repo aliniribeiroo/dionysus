@@ -2,6 +2,8 @@ package com.aliniribeiro.dionysus.model.assets;
 
 import com.aliniribeiro.dionysus.model.common.PageResult;
 
+import java.util.List;
+
 public interface AssetRepositoryCustom {
 
     /**
@@ -21,4 +23,12 @@ public interface AssetRepositoryCustom {
      * @return PageResult com as informações das dívidas encontradas.
      */
     PageResult getAssets(String cpf, Long page, Long size);
+
+    /**
+     * Método que retorna todos os bens do CPF.
+     *
+     * @param cpf  CPF que a dívida será solicitada.
+     * @return PageResult com as informações das dívidas encontradas.
+     */
+    List<AssetEntity> getAllAssets(String cpf);
 }

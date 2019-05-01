@@ -2,6 +2,7 @@ package com.aliniribeiro.dionysus.controller.income;
 
 
 import com.aliniribeiro.dionysus.controller.common.StringConstants;
+import com.aliniribeiro.dionysus.model.common.PageResult;
 import com.aliniribeiro.dionysus.model.income.IncomeEntity;
 import com.aliniribeiro.dionysus.model.income.IncomeRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class IncomeService {
@@ -73,4 +75,25 @@ public class IncomeService {
         personRepository.save(person);
     }
 
+    /**
+     * Método que retorna todas as rendas do CPF.
+     *
+     * @param cpf  CPF que a dívida será solicitada.
+     * @param page pagina a ser encontrada.
+     * @param size tamanho da página a ser encontrada.
+     * @return PageResult com as informações das rendas.
+     */
+    public PageResult getIncomes(String cpf, Long page, Long size){
+        return incomeRepository.getIncomes(cpf, page, size);
+    }
+
+    /**
+     * Método que retorna todas as rendas do CPF.
+     *
+     * @param cpf  CPF que a dívida será solicitada.
+     * @return Lista com  todas as informações das rendas encontradas.
+     */
+    public List<IncomeEntity> getAllIncomes(String cpf){
+        return incomeRepository.getAllIncomes(cpf);
+    }
 }

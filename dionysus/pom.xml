@@ -139,7 +139,7 @@
 				<version>1.3.6</version>
 				<configuration>
 					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-					<repository>${docker.image.prefix}/mockservice</repository>
+					<repository>${docker.image.prefix}/dionysus</repository>
 					<buildArgs>
 						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
 					</buildArgs>

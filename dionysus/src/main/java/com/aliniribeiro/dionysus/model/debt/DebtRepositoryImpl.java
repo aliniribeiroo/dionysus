@@ -5,8 +5,6 @@ import com.aliniribeiro.dionysus.model.common.PageResult;
 import com.aliniribeiro.dionysus.model.common.RepositoryBaseImpl;
 import com.querydsl.jpa.impl.JPAQuery;
 
-import java.util.List;
-
 public class DebtRepositoryImpl extends RepositoryBaseImpl implements DebtRepositoryCustom {
 
     @Override

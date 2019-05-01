@@ -10,6 +10,8 @@ import com.aliniribeiro.dionysus.model.income.IncomeEntity;
 import com.aliniribeiro.dionysus.model.income.QIncomeEntity;
 import com.querydsl.jpa.impl.JPAQuery;
 
+import java.util.List;
+
 public class AssetRepositoryImpl extends RepositoryBaseImpl implements AssetRepositoryCustom {
 
     @Override
@@ -28,5 +30,13 @@ public class AssetRepositoryImpl extends RepositoryBaseImpl implements AssetRepo
 
         PageRequest pageRequest = new PageRequest(page, size);
         return getPagedQuery(query, pageRequest);
+    }
+
+    @Override
+    public List<AssetEntity> getAllAssets(String cpf) {
+        QAssetEntity assets = QAssetEntity.assetEntity;
+        JPAQuery<AssetEntity> query = select(assets).from(assets);
+        query.where(assets.personCPF.eq(cpf));
+        return query.fetch();
     }
 }

@@ -1,8 +1,6 @@
 package com.aliniribeiro.dionysus.controller.income;
 
 
-import com.aliniribeiro.dionysus.controller.assets.AssetsService;
-import com.aliniribeiro.dionysus.model.assets.AssetRepository;
 import com.aliniribeiro.dionysus.model.income.IncomeRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import com.aliniribeiro.dionysus.model.person.PersonRepository;
