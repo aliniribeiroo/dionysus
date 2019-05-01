@@ -1,18 +1,21 @@
-package com.aliniribeiro.dionysus.controller.common;
+package com.aliniribeiro.dionysus.common;
 
 public class StringConstants {
 
-    static public final String ALL_DEBTS_URL = "http://localhost:8585/mockA/getAllDebts";
-    static public final String DATE_DEBTS_URL = "http://localhost:8585/mockA/getAllCPFDebts/%s/%s";
-    static public final String ALL_INCOME_AND_ASSETS_URL = "http://localhost:8585/mockB/getAllIncomeAndAssets";
-    static public final String CPF_INCOME_AND_ASSETS_URL = "http://localhost:8585/mockB/getCPFIncomeAndAssets/%s";
-    static public final String DATE_INCOME_AND_ASSETS_URL = "http://localhost:8585/mockB/getCPFIncomeAndAssets/%s/%s";
-    static public final String LAST_SEARCH_URL = "http://localhost:8585/mockC/getLastSearch/%s";
-    static public final String FINANCIAL_MOVEMENT_URL = "http://localhost:8585/mockC/getFinancialMovement/%s";
-    static public final String LAST_CREDICT_CARD_PURCHASE_URL = "http://localhost:8585/mockC/getLastCredictCardPurchase/%s";
+    //APIS
+    static public final String ALL_DEBTS_URL = "mockA/getAllDebts";
+    static public final String DATE_DEBTS_URL = "mockA/getAllCPFDebts/%s/%s";
+    static public final String ALL_INCOME_AND_ASSETS_URL = "mockB/getAllIncomeAndAssets";
+    static public final String CPF_INCOME_AND_ASSETS_URL = "mockB/getCPFIncomeAndAssets/%s";
+    static public final String DATE_INCOME_AND_ASSETS_URL = "mockB/getCPFIncomeAndAssets/%s/%s";
+    static public final String LAST_SEARCH_URL = "mockC/getLastSearch/%s";
+    static public final String FINANCIAL_MOVEMENT_URL = "mockC/getFinancialMovement/%s";
+    static public final String LAST_CREDICT_CARD_PURCHASE_URL = "mockC/getLastCredictCardPurchase/%s";
+
+
+    //JSON PARSE
     static public final String DATA = "data";
     static public final String ESTABLISHMENT = "establishment";
-
     static public final String ADDRESS = "address";
     static public final String CPF = "cpf";
     static public final String NAME = "name";

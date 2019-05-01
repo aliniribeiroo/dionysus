@@ -28,7 +28,7 @@ services:
     depends_on:
       - db
       - mockservice
-    image: aliniribeiroo/diunysus
+    image: aliniribeiroo/dionysus:latest
     ports:
       - "8080:8080"
     restart: always

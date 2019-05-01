@@ -2,7 +2,7 @@ package com.aliniribeiro.dionysus.controller.person;
 
 
 import com.aliniribeiro.dionysus.controller.assets.AssetsService;
-import com.aliniribeiro.dionysus.controller.common.StringConstants;
+import com.aliniribeiro.dionysus.common.StringConstants;
 import com.aliniribeiro.dionysus.controller.datacontrol.DataControlService;
 import com.aliniribeiro.dionysus.controller.debts.DebtService;
 import com.aliniribeiro.dionysus.controller.debts.contracts.GetDebtsOutput;
@@ -13,20 +13,19 @@ import com.aliniribeiro.dionysus.controller.assets.contracts.PersonAssetsOutput;
 import com.aliniribeiro.dionysus.controller.person.contracts.GetCPFPointsOutput;
 import com.aliniribeiro.dionysus.controller.person.mapper.PersonMapper;
 import com.aliniribeiro.dionysus.model.assets.AssetEntity;
-import com.aliniribeiro.dionysus.model.assets.AssetRepository;
 import com.aliniribeiro.dionysus.model.common.PageResult;
 import com.aliniribeiro.dionysus.model.datacontrol.DataControlEntity;
 import com.aliniribeiro.dionysus.model.debt.DebtEntity;
-import com.aliniribeiro.dionysus.model.debt.DebtRepository;
 import com.aliniribeiro.dionysus.model.income.IncomeEntity;
-import com.aliniribeiro.dionysus.model.income.IncomeRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import com.aliniribeiro.dionysus.model.person.PersonRepository;
-import com.aliniribeiro.dionysus.util.JsonParserHelper;
+import com.aliniribeiro.dionysus.common.util.JsonParserHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

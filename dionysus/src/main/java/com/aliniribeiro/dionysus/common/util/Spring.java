@@ -1,4 +1,4 @@
-package com.aliniribeiro.dionysus.util;
+package com.aliniribeiro.dionysus.common.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

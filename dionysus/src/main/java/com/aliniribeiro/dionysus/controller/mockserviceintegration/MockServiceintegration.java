@@ -1,7 +1,8 @@
 package com.aliniribeiro.dionysus.controller.mockserviceintegration;
 
-import com.aliniribeiro.dionysus.controller.common.StringConstants;
+import com.aliniribeiro.dionysus.common.StringConstants;
 import com.aliniribeiro.dionysus.model.datacontrol.DataControlEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,16 @@ import java.util.logging.Logger;
 public class MockServiceintegration {
 
 
+    @Value("${mock.name}")
+    private String MOCK_APP_NAME;
+
+    private final String MOCK_HTTP = "http://%s:8585/%s";
     private final static Logger LOGGER = Logger.getLogger(MockServiceintegration.class.getName());
+
+
+    private String getMockAppHTTP(String URI){
+        return String.format(MOCK_HTTP, MOCK_APP_NAME, URI);
+    }
 
     /**
      * Método que faz a carga dos dados do Serviço A.
@@ -32,7 +42,7 @@ public class MockServiceintegration {
                 LocalDate now = LocalDate.now();
                 URI = String.format(StringConstants.DATE_DEBTS_URL, lastUpdatedData.toString(), now);
             }
-            ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(getMockAppHTTP(URI), HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
             });
             return Optional.ofNullable(responseEntity.getBody());
 
@@ -56,7 +66,7 @@ public class MockServiceintegration {
                 LocalDate now = LocalDate.now();
                 URI = String.format(StringConstants.DATE_INCOME_AND_ASSETS_URL, lastUpdatedData.toString(), now);
             }
-            ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(getMockAppHTTP(URI), HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
             });
             return Optional.ofNullable(responseEntity.getBody());
         } catch (Exception e) {
@@ -69,7 +79,7 @@ public class MockServiceintegration {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String URI = String.format(StringConstants.LAST_SEARCH_URL, cpf);
-            ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(getMockAppHTTP(URI), HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
             });
             String response = responseEntity.getBody();
             return Optional.ofNullable(response);
@@ -85,7 +95,7 @@ public class MockServiceintegration {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String URI = String.format(StringConstants.FINANCIAL_MOVEMENT_URL, cpf);
-            ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(getMockAppHTTP(URI), HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
             });
             String response = responseEntity.getBody();
             return Optional.ofNullable(response);
@@ -101,7 +111,7 @@ public class MockServiceintegration {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String URI = String.format(StringConstants.LAST_CREDICT_CARD_PURCHASE_URL, cpf);
-            ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(getMockAppHTTP(URI), HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
             });
             String response = responseEntity.getBody();
             return Optional.ofNullable(response);
@@ -118,7 +128,7 @@ public class MockServiceintegration {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String URI = String.format(StringConstants.CPF_INCOME_AND_ASSETS_URL, cpf);
-            ResponseEntity<String> responseEntity = restTemplate.exchange(URI, HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(getMockAppHTTP(URI), HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
             });
             return Optional.ofNullable(responseEntity.getBody());
 

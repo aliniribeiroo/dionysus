@@ -1,12 +1,12 @@
 package com.aliniribeiro.dionysus.controller.events;
 
-import com.aliniribeiro.dionysus.controller.common.StringConstants;
+import com.aliniribeiro.dionysus.common.StringConstants;
 import com.aliniribeiro.dionysus.controller.events.contracts.CredictCardPurchaseDTO;
 import com.aliniribeiro.dionysus.controller.events.contracts.FinancialMovementDTO;
 import com.aliniribeiro.dionysus.controller.events.contracts.LastSearchDTO;
 import com.aliniribeiro.dionysus.controller.events.mapper.EventsMapper;
 import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
-import com.aliniribeiro.dionysus.util.JsonParserHelper;
+import com.aliniribeiro.dionysus.common.util.JsonParserHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

@@ -1,4 +1,4 @@
-package com.aliniribeiro.dionysus.controller.common;
+package com.aliniribeiro.dionysus.common;
 
 import java.util.ArrayList;
 import java.util.List;

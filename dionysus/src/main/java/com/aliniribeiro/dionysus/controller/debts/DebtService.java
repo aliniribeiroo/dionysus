@@ -1,6 +1,6 @@
 package com.aliniribeiro.dionysus.controller.debts;
 
-import com.aliniribeiro.dionysus.controller.common.StringConstants;
+import com.aliniribeiro.dionysus.common.StringConstants;
 import com.aliniribeiro.dionysus.controller.debts.mapper.DebtsMapper;
 import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import com.aliniribeiro.dionysus.model.common.PageResult;
@@ -8,7 +8,7 @@ import com.aliniribeiro.dionysus.model.debt.DebtEntity;
 import com.aliniribeiro.dionysus.model.debt.DebtRepository;
 import com.aliniribeiro.dionysus.model.person.PersonEntity;
 import com.aliniribeiro.dionysus.model.person.PersonRepository;
-import com.aliniribeiro.dionysus.util.JsonParserHelper;
+import com.aliniribeiro.dionysus.common.util.JsonParserHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

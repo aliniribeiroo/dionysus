@@ -1,9 +1,8 @@
-package com.aliniribeiro.dionysus.controller.common;
+package com.aliniribeiro.dionysus.common;
 
 import com.aliniribeiro.dionysus.controller.datacontrol.DataControlService;
-import com.aliniribeiro.dionysus.controller.mockserviceintegration.MockServiceintegration;
 import com.aliniribeiro.dionysus.controller.person.PersonService;
-import com.aliniribeiro.dionysus.util.Spring;
+import com.aliniribeiro.dionysus.common.util.Spring;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

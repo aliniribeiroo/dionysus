@@ -29,7 +29,7 @@ public class DionysusApplication {
 		SchedulerFactory sf = new StdSchedulerFactory();
 		try {
 
-			JobDetail job = JobBuilder.newJob(com.aliniribeiro.dionysus.controller.common.Scheduler.class)
+			JobDetail job = JobBuilder.newJob(com.aliniribeiro.dionysus.common.Scheduler.class)
 					.withIdentity("job1", "group1")
 					.build();
 

@@ -1,4 +1,4 @@
-package com.aliniribeiro.dionysus.util;
+package com.aliniribeiro.dionysus.common.util;
 
 import org.json.simple.JSONObject;
 
