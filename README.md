@@ -38,6 +38,7 @@ O projeto foi construído em utilizando as seguintes tecnologias:
 * [Flyway](https://flywaydb.org/)
 * [PostgreSQL](https://www.postgresql.org/download/)
 * [Maven](https://maven.apache.org/)
+* [Quartz - Biblioteca de agendamento de tarefas](http://www.quartz-scheduler.org/)
 
 Tanto a mock quanto o dionysus, tiveram suas imagens geradas e disponibilizadas no dockerHub:
 * [Imagem do MockServices](https://hub.docker.com/r/aliniribeiroo/dionysus)
