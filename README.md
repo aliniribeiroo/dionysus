@@ -21,7 +21,8 @@ Para o armazenamento destas informações, foi escolhido o banco de dados Postgr
 * Dados da última compra em um cartão de crédito de um CPF;
 * Rendimentos de um CPF;
 * Bens de um CPF;
-* O cálculo da pontuação de um CPF.
+* O cálculo da pontuação de um CPF;
+* Histórico de usuários que fizeram uma busca pelo dionysus de um CPF (Dado utilizado para auditoria).
 
 ## Regras para a busca das informações nos serviços de terceiros
 * No primeiro acesso á alguma API no sistema, o serviço de carga irá ser chamado, trazendo todas as pessoas que possuem dívidas, chamando o Serviço A. Uma Flag é alterada no banco de dados, informando que a primeira carga já foi executada e armazenando o dia;
