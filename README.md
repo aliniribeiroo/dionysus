@@ -28,7 +28,7 @@ Para o armazenamento destas informações, foi escolhido o banco de dados Postgr
 * No primeiro acesso á alguma API no sistema, o serviço de carga irá ser chamado, trazendo todas as pessoas que possuem dívidas, chamando o Serviço A. Uma Flag é alterada no banco de dados, informando que a primeira carga já foi executada e armazenando o dia;
 * Após a carga inicial, a cada 24 horas uma requisição para o Serviço A é realizada para buscar os CPF`s com dívidas das últimas 24 horas;
 * A mesma regra se aplicará para o Serviço B, pois estamos levando em consideração que estas informações são menos propensas a serem alteradas com frequência;
-* As chamadas ao Serviço C, serão realizadas quando a SPI do Dionysus for chamada, os dados não serão armazenados em seu banco de dados, pois acreditamos que estas informações precisam ser em tempo real e o retorno dos dados deve ser extremamente rápido.
+* As chamadas ao Serviço C, serão realizadas quando a API do Dionysus for chamada, os dados não serão armazenados em seu banco de dados, pois acreditamos que estas informações precisam ser em tempo real e o retorno dos dados deve ser extremamente rápido.
 
 * [As APIS consumidas pela Mock podem ser encontradas aqui.](https://github.com/aliniribeiroo/dionysus/wiki/Mock-Service-APIs)
 * [As APIS que o Dionysus disponibiliza podem ser encontradas aqui.](https://github.com/aliniribeiroo/dionysus/wiki/Dionysus-API%60s)
