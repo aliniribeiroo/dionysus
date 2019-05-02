@@ -79,9 +79,10 @@ Tanto a mock quanto o dionysus, tiveram suas imagens geradas e disponibilizadas 
 
 > Para rodar a aplicação localmente, há a necessidade de passar as inforações da base de dados, conforme exemplo:
 ```
--DDB_HOST=jdbc:postgresql://localhost:5432/bates
+-DDB_HOST=jdbc:postgresql://localhost:5432/{nome do banco de dados criado}
 -DDB_USER=postgres
 -DDB_PASSWORD=postgres
+-DMOCK_APP_NAME=localhost
 ```
 
 
@@ -91,4 +92,8 @@ Tanto a mock quanto o dionysus, tiveram suas imagens geradas e disponibilizadas 
 
 
 ## Integração contínua com Travis-ci
+
+O travis-ci foi configurado para realizar o buld do projeto e validar os testes automatozados.
+Hoje temos contruídos no Dionysus 25 testes validando os principais cenários.
+
 [![Build Status](https://travis-ci.org/aliniribeiroo/dionysus.svg?branch=master)](https://travis-ci.org/aliniribeiroo/dionysus)
