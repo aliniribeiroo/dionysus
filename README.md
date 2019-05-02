@@ -1,7 +1,10 @@
 # Dionysus
 Dionysus é uma aplicação que faz integração com  serviços de terceiros, buscando, processando, armazenando dados e disponibilizando os mesmos para serem consumidos via API. O objetivo é disponibilizar para o usuário os dados em tempo real, com segurança e assertividade.
 
-Minha proposta é que, a aplicação seja executada e consumida de dentro de uma VPC (Virtual private Cloud) da Amazon,  com sub redes públicas e privadas (NAT). Desta forma mantemos os servidores de banco de dados em uma subnet privada, sem a acesso público.
+Minha proposta é que, a aplicação seja executada em uma VPC (Virtual Private Cloud) com uma sub-rere publica e uma sub-rede privada, onde na sub-rede privada se encontra a base de dados(RDS) e na sub-rede publica fica os serviços do Dionysus em um EC2.
+As duas aplicações utilizam o mesmo "grupo de segurança", então a comunicação entre banco de dados e serviço apenas acontece se os mesmos estão dentro do mesmo grupo de segurança.
+A unica aplicação que conseguirá ser acessada pela internet é a aplicação da sub-rede publica.
+Segue um desenho para tentar exemplificar este cenário:
 
 Fonte: https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/VPC_Scenario2.html
 
