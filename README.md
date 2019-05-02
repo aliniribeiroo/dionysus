@@ -5,6 +5,8 @@ Minha proposta é que, a aplicação seja executada em uma VPC (Virtual Private 
 As duas aplicações utilizam o mesmo "grupo de segurança", então a comunicação entre banco de dados e serviço apenas acontece se os mesmos estão dentro do mesmo grupo de segurança.
 A unica aplicação que conseguirá ser acessada pela internet é a aplicação da sub-rede publica.
 Segue um desenho para tentar exemplificar este cenário:
+![dionysus](https://user-images.githubusercontent.com/10133177/57110267-4c626f80-6d0e-11e9-9af7-6d20d083cae2.jpg)
+
 
 Fonte: https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/VPC_Scenario2.html
 
